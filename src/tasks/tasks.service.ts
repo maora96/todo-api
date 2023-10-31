@@ -14,14 +14,15 @@ export class TasksService {
   ) {}
 
   async create(createTaskDTO: CreateTaskDTO) {
-    const { title, description, isConcluded, concludedAt, userId } =
-      createTaskDTO;
+    const { title, description, isConcluded, userId } = createTaskDTO;
 
     const user = await this.usersService.findOneById(userId);
 
     if (!user) {
       throw new NotFoundException('Usuário não encontrado.');
     }
+
+    const concludedAt = isConcluded ? new Date() : null;
 
     const task = new Task(title, description, user, concludedAt, isConcluded);
 

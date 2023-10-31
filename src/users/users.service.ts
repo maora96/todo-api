@@ -19,7 +19,7 @@ export class UsersService {
     return this.usersRepository.findOne({ where: { id } });
   }
 
-  async create(createUserDTO: CreateUserDTO): Promise<User> {
+  async create(createUserDTO: CreateUserDTO) {
     const { username, password } = createUserDTO;
 
     const existingUser = await this.findOne(username);
@@ -28,8 +28,11 @@ export class UsersService {
       throw new ForbiddenException('Usuário já existe.');
     }
 
-    const user = new User(username, password);
+    const user = await this.usersRepository.save(new User(username, password));
 
-    return this.usersRepository.save(user);
+    return {
+      username: user.username,
+      id: user.id,
+    };
   }
 }
