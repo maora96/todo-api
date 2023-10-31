@@ -6,11 +6,13 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './users/user.entity';
 import { Task } from './tasks/task.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     UsersModule,
     TasksModule,
+    AuthModule,
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -22,6 +24,7 @@ import { Task } from './tasks/task.entity';
       database: process.env.PGDATABASE,
       port: Number(process.env.PGPORT),
     }),
+    AuthModule,
   ],
   controllers: [],
   providers: [
